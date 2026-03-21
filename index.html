@@ -5,46 +5,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scott Telling</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             background: #121212;
             color: #E0E0E0;
             font-family: 'Space Mono', monospace;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .container {
-            text-align: center;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
+        .page {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 3rem 1.25rem 4rem;
+        }
+
+        header {
+            margin-bottom: 2.5rem;
         }
 
         .name {
-            font-size: clamp(2rem, 8vw, 4.5rem);
+            font-size: 1.5rem;
             font-weight: 700;
             letter-spacing: -0.02em;
-            margin-bottom: 0.75rem;
-            background: linear-gradient(135deg, #E0E0E0 0%, #BB86FC 50%, #03DAC6 100%);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 6s ease-in-out infinite;
+            margin-bottom: 0.5rem;
+            color: #E0E0E0;
         }
 
         .tagline {
-            font-size: clamp(0.75rem, 2.5vw, 1rem);
-            color: rgba(224, 224, 224, 0.4);
-            letter-spacing: 0.15em;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.5;
+        }
+
+        .divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .section-label {
+            font-size: 0.65rem;
             text-transform: uppercase;
-            font-weight: 400;
+            letter-spacing: 0.2em;
+            color: rgba(255,255,255,0.3);
+            margin-bottom: 0.75rem;
+        }
+
+        .apps {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .app-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            text-decoration: none;
+            color: #E0E0E0;
+            min-height: 44px;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .app-card:active {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        @media (hover: hover) {
+            .app-card:hover {
+                background: rgba(255,255,255,0.08);
+                border-color: rgba(187,134,252,0.3);
+            }
+        }
+
+        .app-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .app-icon .material-icons-round {
+            font-size: 22px;
+            color: #121212;
+        }
+
+        .app-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .app-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.15rem;
+        }
+
+        .app-desc {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .app-arrow {
+            color: rgba(255,255,255,0.2);
+            flex-shrink: 0;
         }
 
         .pulse {
@@ -52,13 +128,8 @@
             height: 6px;
             background: #03DAC6;
             border-radius: 50%;
-            margin: 2rem auto 0;
+            margin-top: 3rem;
             animation: pulse 2.5s ease-in-out infinite;
-        }
-
-        @keyframes shimmer {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
         }
 
         @keyframes pulse {
@@ -75,12 +146,45 @@
             pointer-events: none;
             z-index: 0;
         }
+
+        body > * { position: relative; z-index: 1; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="name">Scott Telling</h1>
-        <p class="tagline">Building</p>
+    <div class="page">
+        <header>
+            <h1 class="name">Scott Telling</h1>
+            <p class="tagline">Building the infrastructure that lets one person operate like a studio.</p>
+        </header>
+
+        <div class="divider"></div>
+
+        <p class="section-label">Apps</p>
+
+        <div class="apps">
+
+            <!-- ======================================
+                 ADD NEW APPS HERE
+                 Copy this block and change:
+                 - href (live URL)
+                 - background color on .app-icon
+                 - icon name (from Material Icons Rounded)
+                 - app name and description
+                 ====================================== -->
+
+            <a class="app-card" href="https://secondbrain.scottelling.com" target="_blank" rel="noopener">
+                <div class="app-icon" style="background: #BB86FC;">
+                    <span class="material-icons-round">psychology</span>
+                </div>
+                <div class="app-info">
+                    <div class="app-name">Second Brain</div>
+                    <div class="app-desc">Outliner + AI thinking tool</div>
+                </div>
+                <span class="material-icons-round app-arrow">chevron_right</span>
+            </a>
+
+        </div>
+
         <div class="pulse"></div>
     </div>
 </body>
