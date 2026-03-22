@@ -8,5 +8,15 @@
     "color": "#BB86FC",
     "icon": "✦",
     "launched": "2026-03-21"
+  },
+  {
+    "name": "Second Brain",
+    "slug": "secondbrain",
+    "repo": "scottelling/secondbrain",
+    "description": "Outliner + AI thinking tool",
+    "status": "live",
+    "color": "#03DAC6",
+    "icon": "🧠",
+    "launched": "2026-03-21"
   }
 ]
