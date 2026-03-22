@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Taste Engine",
+    "slug": "taste",
+    "repo": "scottelling/taste",
+    "description": "Cross-domain aesthetic intelligence that learns your visual taste",
+    "status": "live",
+    "color": "#BB86FC",
+    "icon": "✦",
+    "launched": "2026-03-21"
+  }
+]

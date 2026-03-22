@@ -1,190 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scott Elling</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scott Elling — Builder</title>
+  <meta name="description" content="Apps, tools, and infrastructure by Scott Elling." />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            background: #121212;
-            color: #E0E0E0;
-            font-family: 'Space Mono', monospace;
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-        }
+    :root {
+      --bg: #0A0A0A;
+      --surface: #141414;
+      --border: rgba(255,255,255,0.06);
+      --text: #E0E0E0;
+      --text-dim: rgba(255,255,255,0.4);
+      --text-faint: rgba(255,255,255,0.2);
+      --purple: #BB86FC;
+    }
 
-        .page {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 3rem 1.25rem 4rem;
-        }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, 'Helvetica Neue', sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        header {
-            margin-bottom: 2.5rem;
-        }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 60px 20px 80px;
+    }
 
-        .name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 0.5rem;
-            color: #E0E0E0;
-        }
+    /* Header */
+    .header {
+      margin-bottom: 48px;
+    }
 
-        .tagline {
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.5);
-            line-height: 1.5;
-        }
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #F5F5F5;
+      margin-bottom: 8px;
+    }
 
-        .divider {
-            height: 1px;
-            background: rgba(255,255,255,0.1);
-            margin-bottom: 2rem;
-        }
+    .header p {
+      font-size: 15px;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
 
-        .section-label {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: rgba(255,255,255,0.3);
-            margin-bottom: 0.75rem;
-        }
+    /* Projects grid */
+    .projects {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-        .apps {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+    .project-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+    }
 
-        .app-card {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            text-decoration: none;
-            color: #E0E0E0;
-            min-height: 44px;
-            transition: background 0.15s ease, border-color 0.15s ease;
-        }
+    .project-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
 
-        .app-card:active {
-            background: rgba(255,255,255,0.08);
-            border-color: rgba(255,255,255,0.15);
-        }
+    .project-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
 
-        @media (hover: hover) {
-            .app-card:hover {
-                background: rgba(255,255,255,0.08);
-                border-color: rgba(187,134,252,0.3);
-            }
-        }
+    .project-info {
+      flex: 1;
+      min-width: 0;
+    }
 
-        .app-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
+    .project-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #F0F0F0;
+      margin-bottom: 3px;
+    }
 
-        .app-icon .material-icons-round {
-            font-size: 22px;
-            color: #121212;
-        }
+    .project-desc {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
-        .app-info {
-            flex: 1;
-            min-width: 0;
-        }
+    .project-arrow {
+      color: var(--text-faint);
+      font-size: 18px;
+      flex-shrink: 0;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
 
-        .app-name {
-            font-size: 0.95rem;
-            font-weight: 700;
-            margin-bottom: 0.15rem;
-        }
+    .project-card:hover .project-arrow {
+      transform: translateX(3px);
+    }
 
-        .app-desc {
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.5);
-        }
+    .project-status {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
 
-        .app-arrow {
-            color: rgba(255,255,255,0.2);
-            flex-shrink: 0;
-        }
+    .status-live {
+      background: rgba(105,240,174,0.1);
+      color: #69F0AE;
+    }
 
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            background: #03DAC6;
-            border-radius: 50%;
-            flex-shrink: 0;
-            animation: pulse 2.5s ease-in-out infinite;
-        }
+    .status-beta {
+      background: rgba(187,134,252,0.1);
+      color: #BB86FC;
+    }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.5); }
-        }
+    .status-coming {
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.3);
+    }
 
-        /* Subtle background grain */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 0;
-        }
+    /* Empty state */
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-faint);
+      font-size: 13px;
+    }
 
-        body > * { position: relative; z-index: 1; }
-    </style>
+    /* Footer */
+    .footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text-faint);
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-faint);
+      font-size: 12px;
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 40px 16px 60px; }
+      .header h1 { font-size: 24px; }
+      .project-card { padding: 14px 16px; gap: 12px; }
+      .project-icon { width: 38px; height: 38px; font-size: 16px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="page">
-        <header>
-            <h1 class="name">Scott Elling</h1>
-            <p class="tagline">Building the infrastructure that lets one person operate like a studio.</p>
-        </header>
-
-        <div class="divider"></div>
-
-        <p class="section-label">Apps</p>
-
-        <div class="apps">
-
-            <!-- ======================================
-                 ADD NEW APPS HERE
-                 Copy this block and change:
-                 - href (live URL)
-                 - background color on .app-icon
-                 - icon name (from Material Icons Rounded)
-                 - app name and description
-                 ====================================== -->
-
-            <a class="app-card" href="https://secondbrain.scottelling.com" target="_blank" rel="noopener">
-                <div class="app-icon" style="background: #BB86FC;">
-                    <span class="material-icons-round">psychology</span>
-                </div>
-                <div class="app-info">
-                    <div class="app-name">Second Brain</div>
-                    <div class="app-desc">Outliner + AI thinking tool</div>
-                </div>
-                <div class="status-dot"></div>
-                <span class="material-icons-round app-arrow">chevron_right</span>
-            </a>
-
-        </div>
+  <div class="container">
+    <div class="header">
+      <h1>Scott Elling</h1>
+      <p>Building the infrastructure that lets one person operate like a studio.</p>
     </div>
+
+    <div class="projects" id="projects">
+      <div class="loading">Loading projects...</div>
+    </div>
+
+    <div class="footer">
+      <span id="project-count"></span>
+    </div>
+  </div>
+
+  <script>
+    (async function() {
+      const container = document.getElementById('projects');
+      const countEl = document.getElementById('project-count');
+
+      try {
+        const resp = await fetch('projects.json?v=' + Date.now());
+        const projects = await resp.json();
+
+        if (!projects.length) {
+          container.innerHTML = '<div class="empty">No projects yet.</div>';
+          return;
+        }
+
+        const statusClass = {
+          'live': 'status-live',
+          'beta': 'status-beta',
+          'coming': 'status-coming',
+          'coming soon': 'status-coming',
+        };
+
+        container.innerHTML = projects
+          .filter(p => p.status !== 'hidden')
+          .map(p => {
+            const url = `https://${p.slug}.scottelling.com`;
+            const cls = statusClass[p.status] || 'status-live';
+            const hoverColor = p.color || '#BB86FC';
+
+            return `
+              <a class="project-card" href="${url}" 
+                 onmouseenter="this.style.borderColor='${hoverColor}30'"
+                 onmouseleave="this.style.borderColor=''"
+              >
+                <div class="project-icon" style="background:${hoverColor}15; color:${hoverColor};">
+                  ${p.icon || '◈'}
+                </div>
+                <div class="project-info">
+                  <div class="project-name">
+                    ${p.name}
+                    <span class="project-status ${cls}">${p.status}</span>
+                  </div>
+                  <div class="project-desc">${p.description}</div>
+                </div>
+                <div class="project-arrow">→</div>
+              </a>
+            `;
+          }).join('');
+
+        const liveCount = projects.filter(p => p.status === 'live').length;
+        countEl.textContent = liveCount + ' project' + (liveCount !== 1 ? 's' : '') + ' live';
+
+      } catch (err) {
+        container.innerHTML = '<div class="empty">Could not load projects.</div>';
+        console.error(err);
+      }
+    })();
+  </script>
 </body>
 </html>
