@@ -1,30 +1,43 @@
 // GET /api/refresh
-// Finds projects that are DEPLOYED but NOT yet listed in projects.json, so the
-// homepage can grab + link them. Secret-free by design:
-//   1. list public repos under the GitHub owner
-//   2. for any repo not already in the directory, probe <repo>.scottelling.com
-//   3. if it responds, it's a live-but-unlisted project -> return it
+// Finds projects DEPLOYED to a *.scottelling.com subdomain but NOT yet listed in
+// projects.json, so the homepage can grab + link them.
 //
-// Optional env:
-//   GH_OWNER  — GitHub owner to scan (default "scottelling")
+// Source of truth = Vercel's alias list (/v4/aliases), which covers EVERY live
+// subdomain — alias-attached (e.g. codeengine) and project-domain (e.g. hermes),
+// regardless of repo name or visibility.
+//
+// Env (server-side only — never sent to the browser):
+//   VERCEL_TOKEN    — Vercel access token
+//   VERCEL_TEAM_ID  — team id/slug (e.g. "scottelling-1903s-projects")
 //
 // Returns: { discovered: [{ name, slug, url }], scanned, error? }
 
+const API = "https://api.vercel.com";
 const ROOT = "scottelling.com";
-const OWNER = process.env.GH_OWNER || "scottelling";
-const IGNORE = new Set(["scottelling", "www"]);
+const IGNORE_SLUGS = new Set(["www", "scottelling", ""]);
 
-async function probe(url) {
-  try {
-    const r = await fetch(url, { method: "HEAD", redirect: "follow", signal: AbortSignal.timeout(6000) });
-    return r.status < 400;
-  } catch (_) {
-    return false;
-  }
+function subdomainOf(host) {
+  if (!host || !host.endsWith(`.${ROOT}`)) return null;
+  const label = host.slice(0, -(`.${ROOT}`).length);
+  if (!label || label.includes(".")) return null; // single-label only
+  return label;
+}
+
+function pretty(slug) {
+  return slug.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 module.exports = async (req, res) => {
   res.setHeader("Cache-Control", "no-store");
+
+  const token = process.env.VERCEL_TOKEN;
+  const team = process.env.VERCEL_TEAM_ID || "";
+  if (!token) {
+    return res.status(500).json({ discovered: [], scanned: 0, error: "VERCEL_TOKEN not configured" });
+  }
+  const teamQ = team ? `&teamId=${encodeURIComponent(team)}` : "";
+  const headers = { Authorization: `Bearer ${token}` };
+
   try {
     // 1) what's already on the homepage
     const host = req.headers["x-forwarded-host"] || req.headers.host;
@@ -33,30 +46,35 @@ module.exports = async (req, res) => {
       .catch(() => []);
     const known = new Set(existing.map((p) => p.slug));
 
-    // 2) public repos under the owner
-    const repos = await fetch(`https://api.github.com/users/${OWNER}/repos?per_page=100&sort=updated`, {
-      headers: { Accept: "application/vnd.github+json", "User-Agent": "scottelling-gateway" },
-      signal: AbortSignal.timeout(8000),
-    }).then((r) => (r.ok ? r.json() : []));
+    // 2) page through all aliases, collect unique *.scottelling.com subdomains
+    const slugs = new Set();
+    let scanned = 0;
+    let until = "";
+    for (let page = 0; page < 10; page++) {
+      const r = await fetch(`${API}/v4/aliases?limit=100${until}${teamQ}`, {
+        headers,
+        signal: AbortSignal.timeout(9000),
+      });
+      if (!r.ok) throw new Error(`aliases ${r.status}`);
+      const j = await r.json();
+      const aliases = j.aliases || [];
+      scanned += aliases.length;
+      for (const a of aliases) {
+        const s = subdomainOf(a.alias);
+        if (s && !IGNORE_SLUGS.has(s)) slugs.add(s);
+      }
+      const next = j.pagination && j.pagination.next;
+      if (!next) break;
+      until = `&until=${next}`;
+    }
 
-    const candidates = (Array.isArray(repos) ? repos : [])
-      .map((r) => r.name)
-      .filter((slug) => slug && !known.has(slug) && !IGNORE.has(slug));
+    // 3) anything live but not already listed
+    const discovered = [...slugs]
+      .filter((s) => !known.has(s))
+      .sort()
+      .map((slug) => ({ name: pretty(slug), slug, url: `https://${slug}.${ROOT}` }));
 
-    // 3) keep only the ones whose subdomain is actually live
-    const discovered = [];
-    await Promise.all(
-      candidates.map(async (slug) => {
-        const url = `https://${slug}.${ROOT}`;
-        if (await probe(url)) {
-          const name = slug.charAt(0).toUpperCase() + slug.slice(1);
-          discovered.push({ name, slug, url });
-        }
-      })
-    );
-
-    discovered.sort((a, b) => a.slug.localeCompare(b.slug));
-    return res.status(200).json({ discovered, scanned: candidates.length });
+    return res.status(200).json({ discovered, scanned });
   } catch (e) {
     return res.status(500).json({ discovered: [], scanned: 0, error: (e && e.message) || "scan failed" });
   }
