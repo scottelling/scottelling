@@ -18,5 +18,85 @@
     "color": "#03DAC6",
     "icon": "🧠",
     "launched": "2026-03-21"
+  },
+  {
+    "name": "Copy Compiler",
+    "slug": "copywriting",
+    "repo": "scottelling/copywriting",
+    "description": "Ladders any product down to the desire it sells, then remixes winning lines on a mix board",
+    "status": "live",
+    "color": "#F5A623",
+    "icon": "✍",
+    "launched": "2026-06-27"
+  },
+  {
+    "name": "Thrive OS",
+    "slug": "factory",
+    "repo": "scottelling/factory",
+    "description": "A single-tool operating system for thriving indefinitely — across business and personal life",
+    "status": "live",
+    "color": "#2DD4BF",
+    "icon": "✦",
+    "launched": "2026-06-27"
+  },
+  {
+    "name": "Lattice",
+    "slug": "logframe",
+    "repo": "scottelling/logframe",
+    "description": "A LogFrame OS that turns any project into a living causal system and shows where the chain breaks",
+    "status": "live",
+    "color": "#E8651A",
+    "icon": "◫",
+    "launched": "2026-06-27"
+  },
+  {
+    "name": "Cue",
+    "slug": "motion",
+    "repo": "scottelling/motion",
+    "description": "A motion-graphics storyboard tool for landing-page demos — pose beats, the AI tweens the motion",
+    "status": "live",
+    "color": "#8B7CF6",
+    "icon": "◐",
+    "launched": "2026-06-27"
+  },
+  {
+    "name": "Folio",
+    "slug": "reader",
+    "repo": "scottelling/reader",
+    "description": "A reading-first surface where the article is operable — lens, grounded ask, persistent library",
+    "status": "live",
+    "color": "#BB86FC",
+    "icon": "❦",
+    "launched": "2026-06-27"
+  },
+  {
+    "name": "SkillForge",
+    "slug": "skills",
+    "repo": "scottelling/skills",
+    "description": "An AI-native skill compiler — compile, validate against a 13-axis rubric, red-team, and export",
+    "status": "live",
+    "color": "#69F0AE",
+    "icon": "⚒",
+    "launched": "2026-06-27"
+  },
+  {
+    "name": "The Compiler",
+    "slug": "storytelling",
+    "repo": "scottelling/storytelling",
+    "description": "Two story/persuasion engines that strip an idea to its invariants and render it into any medium",
+    "status": "live",
+    "color": "#03DAC6",
+    "icon": "✸",
+    "launched": "2026-06-27"
+  },
+  {
+    "name": "Orb Engine",
+    "slug": "tour",
+    "repo": "scottelling/tour",
+    "description": "A non-blocking onboarding copilot that tracks what you've learned and docks teaching onto the real UI",
+    "status": "live",
+    "color": "#F05252",
+    "icon": "◉",
+    "launched": "2026-06-27"
   }
 ]
